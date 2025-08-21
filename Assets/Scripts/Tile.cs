@@ -1,61 +1,124 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum TouchKey
+{
+    Zero = 0,
+    One  = 1,
+    Two  = 2,
+    Three = 3
+}
+
+[Serializable]
+public struct TouchMat
+{
+    public TouchKey key;
+    public Material material;
+}
+
 public class Tile : MonoBehaviour
 {
-    [SerializeField] private int touchCountTotal;
-    [SerializeField] private int touchCountCurrent;
-    [SerializeField] private float fallDelayTime;
-    [SerializeField] private bool isFalling;
-    [SerializeField] private float minimumYValue; // Cannot fall below
+    [Header("Gameplay")]
+    [SerializeField, Min(1)] private int   touchCountTotal;
+    [SerializeField]         private int   touchCountCurrent;
+    [SerializeField]         private float fallDelayTime = 0.15f;
+    [SerializeField]         private bool  isFalling;
+    [SerializeField]         private float minimumYValue = -10f;
 
-    private bool timerStarted = false;
+    [Header("Visuals")]
+    [SerializeField] private Renderer  targetRenderer;
+    [SerializeField] private TouchMat[] palette;
+
+    private readonly Dictionary<int, Material> lookup = new();
+    private bool timerStarted;
     private Rigidbody rb;
 
-    public void Awake()
+
+    private int Remaining => Mathf.Clamp(touchCountTotal - touchCountCurrent, 0, touchCountTotal);
+
+    void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        rb.constraints = RigidbodyConstraints.FreezeAll;
-
-        touchCountTotal = touchCountTotal != 0 ? touchCountTotal : 1;
-        touchCountCurrent = touchCountCurrent != 0 ? touchCountCurrent : 0;
-    }
-    private void Update()
-    {
-        if (isFalling)
+        if (rb != null)
         {
-            if (transform.position.y <= minimumYValue)
-            {
-                Destroy(gameObject);
-            }
+            rb.constraints = RigidbodyConstraints.FreezeAll;
+        }
+
+        // Defaults
+        if (touchCountTotal <= 0) touchCountTotal = 1;
+        if (touchCountCurrent < 0) touchCountCurrent = 0;
+
+        RebuildLookup();
+        ApplyMaterial();
+    }
+
+    void Update()
+    {
+        if (isFalling && transform.position.y <= minimumYValue)
+        {
+            Destroy(gameObject);
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision collision)
     {
-        if (!collision.gameObject.CompareTag("Player")) return;
+        if (!collision.transform.root.CompareTag("Player")) return;
         if (timerStarted) return;
 
-        touchCountCurrent++;
+        // Increment once; clamp to avoid overshoot if multiple colliders fire
+        touchCountCurrent = Mathf.Min(touchCountTotal, touchCountCurrent + 1);
 
-        if (!timerStarted && touchCountCurrent >= touchCountTotal)
+        // Update visual each time the count changes
+        ApplyMaterial();
+
+        if (touchCountCurrent >= touchCountTotal)
         {
             timerStarted = true;
             isFalling = true;
             Invoke(nameof(Fall), fallDelayTime);
         }
-        
-        return;
     }
 
-    private void Fall()
+    void Fall()
     {
-        GetComponent<Rigidbody>().constraints =
-         RigidbodyConstraints.FreezePositionZ |
-         RigidbodyConstraints.FreezePositionX |
-         RigidbodyConstraints.FreezeRotation;
-        GetComponent<Rigidbody>().useGravity = true;
+        if (!rb) rb = GetComponent<Rigidbody>();
+        if (!rb) return;
+
+        rb.constraints =
+            RigidbodyConstraints.FreezePositionX |
+            RigidbodyConstraints.FreezePositionZ |
+            RigidbodyConstraints.FreezeRotation;
+
+        rb.useGravity = true;
     }
-    
+
+    void ApplyMaterial()
+    {
+        if (!targetRenderer) return;
+
+        Material mat = null;
+        for (int r = Remaining; r >= 0; r--)
+        {
+            if (lookup.TryGetValue(r, out mat))
+                break;
+        }
+
+        if (mat != null)
+        {
+            targetRenderer.sharedMaterial = mat;
+        }
+    }
+
+    void RebuildLookup()
+    {
+        lookup.Clear();
+        if (palette == null) return;
+
+        foreach (var p in palette)
+        {
+            if (p.material != null)
+                lookup[(int)p.key] = p.material;
+        }
+    }
 }

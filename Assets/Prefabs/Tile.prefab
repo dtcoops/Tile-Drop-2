@@ -135,6 +135,14 @@ MonoBehaviour:
   fallDelayTime: 1.5
   isFalling: 0
   minimumYValue: -10
+  targetRenderer: {fileID: 2254112310081313848}
+  palette:
+  - key: 0
+    material: {fileID: 2100000, guid: b9c6899677569d342942d34de7aec382, type: 2}
+  - key: 1
+    material: {fileID: 2100000, guid: a9809d4d0cafdd7498cfdda1357a41fc, type: 2}
+  - key: 2
+    material: {fileID: 2100000, guid: 5fa7f224f56d5be4ba2a6aa1f9cc0540, type: 2}
 --- !u!65 &2254112311011654796
 BoxCollider:
   m_ObjectHideFlags: 0
