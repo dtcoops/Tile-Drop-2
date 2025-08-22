@@ -2,8 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PlayerSide { Left, Right }
+
 public class PlayerController : MonoBehaviour
 {
+    [Header("Identity")]
+    [SerializeField] private PlayerSide side = PlayerSide.Left;
+
+    [Header("Movement")]
     [SerializeField]
     private Rigidbody rb;
     [SerializeField]
@@ -13,12 +19,27 @@ public class PlayerController : MonoBehaviour
 
     private bool isGrounded;
 
+    void Awake()
+    {
+        if (!rb)
+        {
+            rb = GetComponent<Rigidbody>();
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
+        bool held = (side == PlayerSide.Left) ? Input.GetMouseButton(0) : Input.GetMouseButton(1);
+
+        float xMovement = 0f;
+        float zMovement = 0f;
         // horizontal and vertical inputs
-        float xMovement = Input.GetAxis("Horizontal") * playerMoveSpeed;
-        float zMovement = Input.GetAxis("Vertical") * playerMoveSpeed;
+        if(held)
+        {
+            xMovement = Input.GetAxis("Horizontal") * playerMoveSpeed;
+            zMovement = Input.GetAxis("Vertical") * playerMoveSpeed;
+        }
 
         rb.velocity = new Vector3(xMovement, rb.velocity.y, zMovement);
 

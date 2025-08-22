@@ -31,7 +31,7 @@ public class Tile : BaseNPC
 
     private int Remaining => Mathf.Clamp(touchCountTotal - touchCountCurrent, 0, touchCountTotal);
 
-    void Awake()
+    protected override void Awake()
     {
         base.Awake();
 
@@ -49,10 +49,10 @@ public class Tile : BaseNPC
         ApplyMaterial();
     }
 
-    void Update()
+    protected override void Update()
     {
         base.Update();
-        
+
         if (isFalling && transform.position.y <= minimumYValue)
         {
             Destroy(gameObject);
