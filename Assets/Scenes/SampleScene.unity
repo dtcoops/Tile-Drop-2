@@ -1186,11 +1186,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc7ca82571d6130479cbd71147255f7c, type: 3}
---- !u!23 &1183658979 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 2254112310081313848, guid: cc7ca82571d6130479cbd71147255f7c, type: 3}
-  m_PrefabInstance: {fileID: 2254112311317087878}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1255104159
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1353,6 +1348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a8c27677eb0125408cfcaccc1e19228, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMovable: 1
   patrolPoints:
   - {fileID: 1997613188}
   - {fileID: 1373434195}
@@ -1666,22 +1662,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 845764931}
     m_Modifications:
-    - target: {fileID: 2254112310081313848, guid: cc7ca82571d6130479cbd71147255f7c, type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2254112311011654785, guid: cc7ca82571d6130479cbd71147255f7c, type: 3}
       propertyPath: m_Name
       value: Tile
       objectReference: {fileID: 0}
     - target: {fileID: 2254112311011654797, guid: cc7ca82571d6130479cbd71147255f7c, type: 3}
-      propertyPath: newMat
-      value: 
-      objectReference: {fileID: 2100000, guid: a9809d4d0cafdd7498cfdda1357a41fc, type: 2}
+      propertyPath: isMovable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2254112311011654797, guid: cc7ca82571d6130479cbd71147255f7c, type: 3}
-      propertyPath: childRenderer
+      propertyPath: touchCountTotal
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2254112311011654797, guid: cc7ca82571d6130479cbd71147255f7c, type: 3}
+      propertyPath: patrolPoints.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2254112311011654797, guid: cc7ca82571d6130479cbd71147255f7c, type: 3}
+      propertyPath: patrolPoints.Array.data[0]
       value: 
-      objectReference: {fileID: 1183658979}
+      objectReference: {fileID: 1997613188}
+    - target: {fileID: 2254112311011654797, guid: cc7ca82571d6130479cbd71147255f7c, type: 3}
+      propertyPath: patrolPoints.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2254112311011654798, guid: cc7ca82571d6130479cbd71147255f7c, type: 3}
       propertyPath: m_RootOrder
       value: 0

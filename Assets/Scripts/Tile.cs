@@ -2,13 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TouchKey
-{
-    Zero = 0,
-    One  = 1,
-    Two  = 2,
-    Three = 3
-}
+public enum TouchKey {Zero = 0, One  = 1, Two  = 2, Three = 3}
 
 [Serializable]
 public struct TouchMat
@@ -17,7 +11,7 @@ public struct TouchMat
     public Material material;
 }
 
-public class Tile : MonoBehaviour
+public class Tile : BaseNPC
 {
     [Header("Gameplay")]
     [SerializeField, Min(1)] private int   touchCountTotal;
@@ -39,8 +33,10 @@ public class Tile : MonoBehaviour
 
     void Awake()
     {
+        base.Awake();
+
         rb = GetComponent<Rigidbody>();
-        if (rb != null)
+        if (rb)
         {
             rb.constraints = RigidbodyConstraints.FreezeAll;
         }
@@ -55,6 +51,8 @@ public class Tile : MonoBehaviour
 
     void Update()
     {
+        base.Update();
+        
         if (isFalling && transform.position.y <= minimumYValue)
         {
             Destroy(gameObject);
