@@ -14,14 +14,14 @@ public struct TouchMat
 public class Tile : BaseNPC
 {
     [Header("Gameplay")]
-    [SerializeField, Min(1)] private int   touchCountTotal;
-    [SerializeField]         private int   touchCountCurrent;
-    [SerializeField]         private float fallDelayTime = 0.15f;
-    [SerializeField]         private bool  isFalling;
-    [SerializeField]         private float minimumYValue = -10f;
+    [SerializeField, Min(1)] private int touchCountTotal;
+    [SerializeField] private int touchCountCurrent;
+    [SerializeField] private float fallDelayTime = 0.15f;
+    [SerializeField] private bool isFalling;
+    [SerializeField] private float minimumYValue = -10f;
 
     [Header("Visuals")]
-    [SerializeField] private Renderer  targetRenderer;
+    [SerializeField] private Renderer targetRenderer;
     [SerializeField] private TouchMat[] palette;
 
     private readonly Dictionary<int, Material> lookup = new();
@@ -118,5 +118,18 @@ public class Tile : BaseNPC
             if (p.material != null)
                 lookup[(int)p.key] = p.material;
         }
+    }
+
+    public void ForceFall(float? delayOverride = null)
+    {
+        if (timerStarted) return;
+
+        timerStarted = true;
+        isFalling = true;
+        ApplyMaterial();
+
+        float delay = delayOverride ?? fallDelayTime;
+        if (delay <= 0f) Fall();
+        else Invoke(nameof(Fall), delay);
     }
 }
