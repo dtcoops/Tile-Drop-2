@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private float playerMoveSpeed;
     [SerializeField]
     private float playerJumpForce;
+    [SerializeField] private float minimumYValue = -10f;
 
     private bool isGrounded;
 
@@ -30,6 +31,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (transform.position.y <= minimumYValue)
+        {
+            Destroy(gameObject);
+        }
+
         bool held = (side == PlayerSide.Left) ? Input.GetMouseButton(0) : Input.GetMouseButton(1);
 
         float xMovement = 0f;
