@@ -35,10 +35,15 @@ public class PlayerController : MonoBehaviour
         float xMovement = 0f;
         float zMovement = 0f;
         // horizontal and vertical inputs
-        if(held)
+        if (held)
         {
             xMovement = Input.GetAxis("Horizontal") * playerMoveSpeed;
             zMovement = Input.GetAxis("Vertical") * playerMoveSpeed;
+
+            if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+            {
+                Jump();
+            }
         }
 
         rb.velocity = new Vector3(xMovement, rb.velocity.y, zMovement);
@@ -50,12 +55,6 @@ public class PlayerController : MonoBehaviour
         if (vel.x != 0 || vel.z != 0)
         {
             transform.forward = vel;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        {
-            rb.AddForce(Vector3.up * playerJumpForce, ForceMode.Impulse);
-            isGrounded = false;
         }
 
         if (transform.position.y <= -10)
@@ -70,6 +69,12 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = true;
         }
+    }
+
+    private void Jump()
+    {
+        rb.AddForce(Vector3.up * playerJumpForce, ForceMode.Impulse);
+        isGrounded = false;
     }
 
 
