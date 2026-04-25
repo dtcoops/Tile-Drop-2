@@ -52,10 +52,10 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        rb.velocity = new Vector3(xMovement, rb.velocity.y, zMovement);
+        rb.linearVelocity = new Vector3(xMovement, rb.linearVelocity.y, zMovement);
 
         // copy velocity and set y to 0 to prvent rotating as it falls
-        Vector3 vel = rb.velocity;
+        Vector3 vel = rb.linearVelocity;
         vel.y = 0;
         // use new velocity to rotate to moving direction
         if (vel.x != 0 || vel.z != 0)
