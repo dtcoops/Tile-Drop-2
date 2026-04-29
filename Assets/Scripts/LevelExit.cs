@@ -20,7 +20,7 @@ public class LevelExit : MonoBehaviour
         }
     }
 
-    private void OnTrigerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
