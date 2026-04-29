@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public enum PlayerSide { Left, Right }
 
@@ -20,6 +21,8 @@ public class PlayerController : MonoBehaviour
 
     private bool isGrounded;
 
+    public static event Action OnPlayerDied;
+
     void Awake()
     {
         if (!rb)
@@ -33,6 +36,7 @@ public class PlayerController : MonoBehaviour
     {
         if (transform.position.y <= minimumYValue)
         {
+            OnPlayerDied?.Invoke();
             Destroy(gameObject);
         }
 
