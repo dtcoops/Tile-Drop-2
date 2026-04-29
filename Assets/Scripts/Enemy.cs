@@ -71,7 +71,7 @@ public class Enemy : BaseNPC
             int id = tile.GetInstanceID();
             if (!seenTiles.Add(id)) continue;
 
-            tile.ForceFall(tileFallDelay);
+            tile.StartFall(tileFallDelay);
             touched++;
         }
 

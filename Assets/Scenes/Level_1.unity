@@ -405,10 +405,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4089262976223076880, guid: fe5a5b6c646d8f74483d55221a3ed9f3, type: 3}
-      propertyPath: m_RootOrder
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 4089262976223076880, guid: fe5a5b6c646d8f74483d55221a3ed9f3, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.088
       objectReference: {fileID: 0}
@@ -447,10 +443,6 @@ PrefabInstance:
     - target: {fileID: 4089262976223076880, guid: fe5a5b6c646d8f74483d55221a3ed9f3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4089262976223076881, guid: fe5a5b6c646d8f74483d55221a3ed9f3, type: 3}
-      propertyPath: side
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4089262976223076894, guid: fe5a5b6c646d8f74483d55221a3ed9f3, type: 3}
       propertyPath: m_Name
@@ -1959,6 +1951,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4089262975601824880, guid: fe5a5b6c646d8f74483d55221a3ed9f3, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 729ebcdc7134fb84e875fb7659cdd15a, type: 2}
     - target: {fileID: 4089262976223076880, guid: fe5a5b6c646d8f74483d55221a3ed9f3, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -2002,6 +1998,22 @@ PrefabInstance:
     - target: {fileID: 4089262976223076880, guid: fe5a5b6c646d8f74483d55221a3ed9f3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4089262976223076881, guid: fe5a5b6c646d8f74483d55221a3ed9f3, type: 3}
+      propertyPath: side
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4089262976223076882, guid: fe5a5b6c646d8f74483d55221a3ed9f3, type: 3}
+      propertyPath: m_Radius
+      value: 0.25897017
+      objectReference: {fileID: 0}
+    - target: {fileID: 4089262976223076882, guid: fe5a5b6c646d8f74483d55221a3ed9f3, type: 3}
+      propertyPath: m_Center.x
+      value: 0.006011009
+      objectReference: {fileID: 0}
+    - target: {fileID: 4089262976223076882, guid: fe5a5b6c646d8f74483d55221a3ed9f3, type: 3}
+      propertyPath: m_Center.z
+      value: 0.002130717
       objectReference: {fileID: 0}
     - target: {fileID: 4089262976223076894, guid: fe5a5b6c646d8f74483d55221a3ed9f3, type: 3}
       propertyPath: m_Name

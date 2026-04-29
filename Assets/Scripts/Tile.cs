@@ -27,6 +27,7 @@ public class Tile : BaseNPC
     private readonly Dictionary<int, Material> lookup = new();
     private bool timerStarted;
     private Rigidbody rb;
+    private int activeContacts = 0;
 
 
     private int Remaining => Mathf.Clamp(touchCountTotal - touchCountCurrent, 0, touchCountTotal);
@@ -64,18 +65,31 @@ public class Tile : BaseNPC
         if (!collision.transform.root.CompareTag("Player")) return;
         if (timerStarted) return;
 
-        // Increment once; clamp to avoid overshoot if multiple colliders fire
-        touchCountCurrent = Mathf.Min(touchCountTotal, touchCountCurrent + 1);
+        activeContacts++;
 
+        // Increment once; clamp to avoid overshoot if multiple colliders fire
+        touchCountCurrent = touchCountCurrent + 1;
         // Update visual each time the count changes
         ApplyMaterial();
 
-        if (touchCountCurrent >= touchCountTotal)
+        // To prevent second player exploit - tile will fall immediatly if two players try to occupy a tile on its last life.
+        if (touchCountCurrent > touchCountTotal)
         {
-            timerStarted = true;
-            isFalling = true;
-            Invoke(nameof(Fall), fallDelayTime);
+            StartFall();
         }
+    }
+
+    void OnCollisionExit(Collision collision)
+    {
+        if (!collision.transform.root.CompareTag("Player")) return;
+
+        activeContacts = Mathf.Max(0, activeContacts - 1);
+
+        // If tile touchcount <= 0 and no players are touching it - Fall
+        if (!timerStarted && touchCountCurrent >= touchCountTotal && activeContacts <= 0)
+        {
+            StartFall();
+        }       
     }
 
     void Fall()
@@ -120,7 +134,7 @@ public class Tile : BaseNPC
         }
     }
 
-    public void ForceFall(float? delayOverride = null)
+    public void StartFall(float? delayOverride = null)
     {
         if (timerStarted) return;
 
