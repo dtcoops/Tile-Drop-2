@@ -1014,8 +1014,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 74.8
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 6
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1039,8 +1039,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 810663701}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.4403889, y: -0.008523139, z: -0.0014248856, w: 0.8977655}
-  m_LocalPosition: {x: 3.69, y: 6.73, z: -10.89}
+  m_LocalRotation: {x: 0.4069979, y: -0.008569822, z: -0.001109818, w: 0.91338825}
+  m_LocalPosition: {x: 3.34, y: 10.92, z: -13.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2143,7 +2143,7 @@ MonoBehaviour:
   m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 74.8
-    OrthographicSize: 5
+    OrthographicSize: 6
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -2181,8 +2181,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1538616737}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.4403889, y: -0.008523139, z: -0.0014248856, w: 0.8977655}
-  m_LocalPosition: {x: 3.69, y: 6.73, z: -10.89}
+  m_LocalRotation: {x: 0.4069979, y: -0.008569822, z: -0.001109818, w: 0.91338825}
+  m_LocalPosition: {x: 3.34, y: 10.92, z: -13.35}
   m_LocalScale: {x: 0.61219954, y: 1, z: 1.0118}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2561,7 +2561,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5938283760890848215, guid: d6c7a0030a839074daea0e18785335d7, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.8
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 5938283760890848215, guid: d6c7a0030a839074daea0e18785335d7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3172,7 +3172,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5938283760890848215, guid: d6c7a0030a839074daea0e18785335d7, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.8
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 5938283760890848215, guid: d6c7a0030a839074daea0e18785335d7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
