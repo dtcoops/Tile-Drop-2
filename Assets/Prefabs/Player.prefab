@@ -184,7 +184,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   side: 1
+  role: 0
+  partner: {fileID: 0}
   rb: {fileID: 4089262976223076883}
   playerMoveSpeed: 2
   playerJumpForce: 5
   minimumYValue: -10
+  throwDelay: 0.3
+  throwDistance: 2
+  throwHeight: 1

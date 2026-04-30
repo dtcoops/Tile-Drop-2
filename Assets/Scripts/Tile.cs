@@ -27,7 +27,8 @@ public class Tile : BaseNPC
     private readonly Dictionary<int, Material> lookup = new();
     private bool timerStarted;
     private Rigidbody rb;
-    private int activeContacts = 0;
+    private HashSet<int> contactingPlayers = new();
+    private HashSet<int> holdingPlayers = new();
 
 
     private int Remaining => Mathf.Clamp(touchCountTotal - touchCountCurrent, 0, touchCountTotal);
@@ -60,37 +61,50 @@ public class Tile : BaseNPC
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+void OnCollisionEnter(Collision collision)
+{
+    if (!collision.transform.root.CompareTag("Player")) return;
+    if (timerStarted) return;
+
+    var player = collision.transform.GetComponentInParent<PlayerController>();
+    int id = collision.transform.root.GetInstanceID();
+    
+    if (player != null && player.IsHolding) return;
+
+    if (contactingPlayers.Add(id))
     {
-        if (!collision.transform.root.CompareTag("Player")) return;
-        if (timerStarted) return;
-
-        activeContacts++;
-
-        // Increment once; clamp to avoid overshoot if multiple colliders fire
-        touchCountCurrent = touchCountCurrent + 1;
-        // Update visual each time the count changes
+        touchCountCurrent++;
         ApplyMaterial();
-
-        // To prevent second player exploit - tile will fall immediatly if two players try to occupy a tile on its last life.
+       
         if (touchCountCurrent > touchCountTotal)
-        {
             StartFall();
-        }
     }
+}
 
-    void OnCollisionExit(Collision collision)
+void OnCollisionExit(Collision collision)
+{
+    if (!collision.transform.root.CompareTag("Player")) return;
+
+    var player = collision.transform.GetComponentInParent<PlayerController>();
+    int id = collision.transform.root.GetInstanceID();
+
+    if (player != null && player.IsHolding)
     {
-        if (!collision.transform.root.CompareTag("Player")) return;
-
-        activeContacts = Mathf.Max(0, activeContacts - 1);
-
-        // If tile touchcount <= 0 and no players are touching it - Fall
-        if (!timerStarted && touchCountCurrent >= touchCountTotal && activeContacts <= 0)
-        {
-            StartFall();
-        }       
+        // Remember this player was holding when they exited
+        holdingPlayers.Add(id);
+        return;
     }
+
+    // If this player was holding when they last exited, skip this exit too
+    if (holdingPlayers.Remove(id)) return;
+
+    if (contactingPlayers.Remove(id))
+    {
+        if (!timerStarted && touchCountCurrent >= touchCountTotal && contactingPlayers.Count == 0)
+            StartFall();
+    }
+}
+
 
     void Fall()
     {
