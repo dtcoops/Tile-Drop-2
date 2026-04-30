@@ -51,10 +51,8 @@ public class Tile : BaseNPC
         ApplyMaterial();
     }
 
-    protected override void Update()
+    protected void Update()
     {
-        base.Update();
-
         if (isFalling && transform.position.y <= minimumYValue)
         {
             Destroy(gameObject);

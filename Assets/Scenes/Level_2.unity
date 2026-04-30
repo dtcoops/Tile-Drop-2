@@ -145,7 +145,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2254112311011654797, guid: cc7ca82571d6130479cbd71147255f7c, type: 3}
       propertyPath: touchCountTotal
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2254112311011654797, guid: cc7ca82571d6130479cbd71147255f7c, type: 3}
       propertyPath: patrolPoints.Array.size
@@ -822,7 +822,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2254112311011654797, guid: cc7ca82571d6130479cbd71147255f7c, type: 3}
       propertyPath: touchCountTotal
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2254112311011654797, guid: cc7ca82571d6130479cbd71147255f7c, type: 3}
       propertyPath: patrolPoints.Array.size

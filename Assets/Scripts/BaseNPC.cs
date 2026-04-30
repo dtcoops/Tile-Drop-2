@@ -5,12 +5,10 @@ using UnityEngine;
 public class BaseNPC : MonoBehaviour
 {
     [Header("Movement")]
-    [SerializeField]
-    protected bool isMovable = false;
-    [SerializeField]
-    protected List<Transform> patrolPoints;
-    [SerializeField]
-    protected float speed = 1.0f;
+    [SerializeField] protected bool isMovable = false;
+    [SerializeField] protected List<Transform> patrolPoints;
+    [SerializeField] protected float speed = 1.0f;
+    [SerializeField] private float pauseDuration = 1f;
 
     protected float positionMarginOfError = 0.05f;
     protected int targetLocationIndex = 0;
@@ -18,22 +16,29 @@ public class BaseNPC : MonoBehaviour
     protected virtual void Awake()
     {
         if (patrolPoints != null && patrolPoints.Count > 0)
+        {
             targetLocationIndex = 0;
+            StartCoroutine(PatrolWithPause());
+        }
     }
 
-    protected virtual void Update()
+    protected virtual IEnumerator PatrolWithPause()
     {
-        if (isMovable && patrolPoints != null && patrolPoints.Count > 0)
-            PatrolStep();
-    }
+        while (true)
+        {
+            var target = patrolPoints[targetLocationIndex];
 
-    protected virtual void PatrolStep()
-    {
-        var target = patrolPoints[targetLocationIndex];
-        transform.position = Vector3.MoveTowards(
-            transform.position, target.position, speed * Time.deltaTime);
+            while (Vector3.Distance(transform.position, target.position) > positionMarginOfError)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+                yield return null;
+            }
 
-        if (Vector3.Distance(transform.position, target.position) <= positionMarginOfError)
+            // Snap to exact position
+            transform.position = target.position;
             targetLocationIndex = (targetLocationIndex + 1) % patrolPoints.Count;
+
+            yield return new WaitForSeconds(pauseDuration);
+        }
     }
 }
