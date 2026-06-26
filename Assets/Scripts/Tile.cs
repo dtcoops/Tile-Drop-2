@@ -29,6 +29,8 @@ public class Tile : BaseNPC
     private Rigidbody rb;
     private HashSet<int> contactingPlayers = new();
     private HashSet<int> holdingPlayers = new();
+    private Dictionary<int, Rigidbody> ridingBodies = new();
+    private Vector3 prevPosition;
 
 
     private int Remaining => Mathf.Clamp(touchCountTotal - touchCountCurrent, 0, touchCountTotal);
@@ -42,6 +44,8 @@ public class Tile : BaseNPC
         {
             rb.constraints = RigidbodyConstraints.FreezeAll;
         }
+
+        prevPosition = transform.position;
 
         // Defaults
         if (touchCountTotal <= 0) touchCountTotal = 1;
@@ -59,6 +63,25 @@ public class Tile : BaseNPC
         }
     }
 
+    // LateUpdate runs after yield-null coroutines, so the tile has already moved this frame.
+    // This gives us the correct delta with no lag.
+    void LateUpdate()
+    {
+        if (isMovable && !isFalling && ridingBodies.Count > 0)
+        {
+            Vector3 delta = transform.position - prevPosition;
+            if (delta.sqrMagnitude > 0f)
+            {
+                foreach (var body in ridingBodies.Values)
+                {
+                    if (body != null) body.position += delta;
+                }
+            }
+        }
+
+        prevPosition = transform.position;
+    }
+
 void OnCollisionEnter(Collision collision)
 {
     if (!collision.transform.root.CompareTag("Player")) return;
@@ -66,14 +89,20 @@ void OnCollisionEnter(Collision collision)
 
     var player = collision.transform.GetComponentInParent<PlayerController>();
     int id = collision.transform.root.GetInstanceID();
-    
+
     if (player != null && player.IsHolding) return;
 
     if (contactingPlayers.Add(id))
     {
         touchCountCurrent++;
         ApplyMaterial();
-       
+
+        if (isMovable && !isFalling)
+        {
+            var playerRb = collision.transform.root.GetComponent<Rigidbody>();
+            if (playerRb != null) ridingBodies[id] = playerRb;
+        }
+
         if (touchCountCurrent > touchCountTotal)
             StartFall();
     }
@@ -98,6 +127,8 @@ void OnCollisionExit(Collision collision)
 
     if (contactingPlayers.Remove(id))
     {
+        ridingBodies.Remove(id);
+
         if (!timerStarted && touchCountCurrent >= touchCountTotal && contactingPlayers.Count == 0)
             StartFall();
     }
@@ -106,6 +137,8 @@ void OnCollisionExit(Collision collision)
 
     void Fall()
     {
+        ridingBodies.Clear();
+
         if (!rb) rb = GetComponent<Rigidbody>();
         if (!rb) return;
 

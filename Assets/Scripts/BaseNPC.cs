@@ -9,6 +9,9 @@ public class BaseNPC : MonoBehaviour
     [SerializeField] protected List<Transform> patrolPoints;
     [SerializeField] protected float speed = 1.0f;
     [SerializeField] private float pauseDuration = 1f;
+    
+    [Header("Synchronization")]
+    [SerializeField] private float cyclePeriod = 10f;
 
     protected float positionMarginOfError = 0.05f;
     protected int targetLocationIndex = 0;
@@ -17,9 +20,25 @@ public class BaseNPC : MonoBehaviour
     {
         if (patrolPoints != null && patrolPoints.Count > 0)
         {
+            speed = CalculateSpeed();
             targetLocationIndex = 0;
             StartCoroutine(PatrolWithPause());
         }
+    }
+
+    private float CalculateSpeed()
+    {
+        float totalDistance = 0f;
+        for (int i = 0; i < patrolPoints.Count; i++)
+        {
+            int next = (i + 1) % patrolPoints.Count;
+            totalDistance += Vector3.Distance(patrolPoints[i].position, patrolPoints[next].position);
+        }
+
+        float totalPauseTime = pauseDuration * patrolPoints.Count;
+        float movingTime = cyclePeriod - totalPauseTime;
+
+        return totalDistance / movingTime;
     }
 
     protected virtual IEnumerator PatrolWithPause()
